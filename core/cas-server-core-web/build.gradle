@@ -1,0 +1,48 @@
+description = "Apereo CAS Core Web"
+dependencies {
+    api project(":api:cas-server-core-api-web")
+    api project(":api:cas-server-core-api-ticket")
+    api project(":api:cas-server-core-api-services")
+    api project(":api:cas-server-core-api-logout")
+    api project(":api:cas-server-core-api-webflow")
+
+    compileOnly project(":core:cas-server-core-authentication")
+    implementation project(":core:cas-server-core-configuration")
+    implementation project(":core:cas-server-core-util")
+    
+    implementation libraries.pac4j
+    implementation libraries.thymeleaf
+}
+
+// Filter properties from gradle.properties into this sub-project's property file resources  
+def gradleProps = new Properties()
+def gradlePropFile = file("../../gradle.properties")
+gradlePropFile.withInputStream { gradleProps.load(it) }
+
+processResources {
+    inputs.properties(gradleProps)
+    filesMatching("**/*.properties") {
+        expand(gradleProps)
+    }
+}
+
+/* 
+Manually deleting jar if we gradle.properties newer than jar
+Probably a better way, but watch out for "tasks.jar.onlyIf" elsewhere in build scripts
+ */
+jar.dependsOn 'deleteJar'
+
+task deleteJar(type: Delete) {
+    def jarFile = file("build/libs/${project.name}-${project.version}.jar")
+    def propModified = gradlePropFile.lastModified()
+    def jarModified = jarFile.lastModified()
+    if (propModified > jarModified) { 
+        doLast {
+            logger.info("""
+Deleting JAR files [$jarFile] due to [gradle.properties] update because it was updated last at [$propModified]
+which is the greater than the last time the JAR files were updates at [$jarModified].
+""")
+        }
+        delete jarFile
+    }
+}

@@ -1,0 +1,21 @@
+description = "Apereo CAS WS-Security Secure Token Service"
+dependencies {
+    implementation libraries.opensaml
+    implementation libraries.bouncycastle
+    implementation libraries.apachecxf
+    implementation libraries.ehcache
+    implementation project(":core:cas-server-core-web")
+    implementation project(":core:cas-server-core-tickets")
+    implementation project(":core:cas-server-core-util")
+    implementation project(":core:cas-server-core-configuration")
+    implementation project(":core:cas-server-core-services")
+    implementation project(":core:cas-server-core-authentication")
+    implementation project(":support:cas-server-support-validation")
+    implementation project(":support:cas-server-support-ws-idp-api")
+    implementation project(":support:cas-server-support-saml-core")
+    testImplementation project(path: ":core:cas-server-core")
+    testImplementation project(":core:cas-server-core-logout")
+    testImplementation project(":support:cas-server-support-cookie")
+    testImplementation project(path: ":core:cas-server-core-authentication", configuration: "tests")
+    testImplementation project(path: ":core:cas-server-core-services", configuration: "tests")
+}

@@ -1,0 +1,16 @@
+description = "Apereo CAS Events Consumer JPA"
+dependencies {
+    implementation project(":core:cas-server-core-events")
+    implementation project(":core:cas-server-core-util")
+    implementation project(":core:cas-server-core-configuration")
+    implementation project(":support:cas-server-support-jpa-util")
+    
+    runtimeOnly project(":support:cas-server-support-jdbc-drivers")
+
+    testImplementation project(path: ":core:cas-server-core-authentication", configuration: "tests")
+    testImplementation project(path: ":core:cas-server-core-tickets", configuration: "tests")
+    testImplementation project(path: ":core:cas-server-core-events", configuration: "tests")
+    testImplementation project(path: ":core:cas-server-core-tickets")
+    testImplementation project(path: ":core:cas-server-core-services")
+    testImplementation project(path: ":core:cas-server-core-logout")
+}

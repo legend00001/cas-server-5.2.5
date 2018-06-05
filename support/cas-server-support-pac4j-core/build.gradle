@@ -1,0 +1,5 @@
+description = "Apereo CAS Support for Pac4j"
+dependencies {
+    implementation project(":core:cas-server-core-authentication")
+    api libraries.pac4j
+}
